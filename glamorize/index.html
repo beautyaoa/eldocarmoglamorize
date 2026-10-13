@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Eldo Carmo Glamorize — Beleza & Estética premium em Luanda. Manicure, pedicure, tratamentos e mais.">
+  <title>Glamorize | Eldo Carmo Beauty</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/images/eldocarmoglamorizelogo.webp" type="image/webp">
+</head>
+<body>
+  <!-- ========== ANNOUNCEMENT BAR ========== -->
+  <a class="announce-bar" href="https://youtu.be/6vzUPh26JZA?si=xl3FzxXKTsRD6NoC" target="_blank" rel="noopener">
+    Já disponível — música <strong>Tá Queimar</strong> 🔥🔥🔥 · Ouvir no YouTube
+  </a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" type="button">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+
+      <a href="index.html" class="header__logo">
+        <span class="header__logo-name">Eldo Carmo Glamorize</span>
+        <span class="header__logo-sub">Beleza &amp; Estética</span>
+      </a>
+
+      <div class="header__actions" aria-hidden="true"></div>
+    </div>
+
+    <nav class="header__nav" aria-label="Menu principal">
+      <a href="index.html" class="header__nav-link">Início</a>
+      <a href="#servicos" class="header__nav-link">Serviços</a>
+      <a href="#experiencia" class="header__nav-link">Experiência</a>
+      <a href="#agendar" class="header__nav-link">Agendar</a>
+      <div class="header__nav-item header__nav-item--discover">
+        <button type="button" class="header__nav-link header__nav-discover-trigger" aria-expanded="false" aria-haspopup="true">
+          Discovery
+        </button>
+        <div class="header__discover-dropdown" role="menu">
+          <p class="header__discover-label">Johnny Berry — Tá Queimar</p>
+          <ul class="header__discover-music">
+            <li>
+              <a href="https://youtu.be/6vzUPh26JZA?si=xl3FzxXKTsRD6NoC" target="_blank" rel="noopener" role="menuitem">
+                <img src="assets/icons/youtube.webp" alt="" width="88" height="28">
+                <span>YouTube</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://open.spotify.com/album/7LO9kumBSe1za71O5oKOjZ?si=1&nd=1&dlsi=8021751f937340e2" target="_blank" rel="noopener" role="menuitem">
+                <img src="assets/icons/spotify.webp" alt="" width="88" height="28">
+                <span>Spotify</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://music.apple.com/us/album/t%C3%A1-queimar-feat-young-k-varox-007-single/6788576000" target="_blank" rel="noopener" role="menuitem">
+                <img src="assets/icons/apple-music.webp" alt="" width="28" height="28">
+                <span>Apple Music</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.deezer.com/us/album/1023440431" target="_blank" rel="noopener" role="menuitem">
+                <img src="assets/icons/deezer.webp" alt="" width="88" height="28">
+                <span>Deezer</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/results?search_query=Johnny+Berry+T%C3%A1+Queimar" target="_blank" rel="noopener" role="menuitem">
+                <img src="assets/icons/youtube-music.webp" alt="" width="100" height="28">
+                <span>YouTube Music</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <a href="https://eldocarmo.workersdevao.workers.dev" class="header__nav-link" target="_blank" rel="noopener">Portal</a>
+    </nav>
+  </header>
+
+  <!-- ========== LEFT MENU DRAWER ========== -->
+  <div class="menu-drawer" id="menu-drawer" aria-hidden="true">
+    <div class="menu-drawer__overlay" id="menu-overlay"></div>
+    <aside class="menu-drawer__panel" role="dialog" aria-label="Menu">
+      <div class="menu-drawer__head">
+        <span class="menu-drawer__brand">Eldo Carmo Glamorize</span>
+        <button class="menu-drawer__close" id="menu-close" aria-label="Fechar" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="menu-drawer__nav" aria-label="Menu principal">
+        <a href="index.html" class="menu-drawer__link">Início</a>
+        <a href="#servicos" class="menu-drawer__link">Serviços</a>
+        <a href="#experiencia" class="menu-drawer__link">Experiência</a>
+        <a href="#agendar" class="menu-drawer__link">Agendar</a>
+        <a href="https://eldocarmo.workersdevao.workers.dev" class="menu-drawer__link" target="_blank" rel="noopener">Portal</a>
+        <a href="https://eldocarmobarbershop.workersdevao.workers.dev" class="menu-drawer__link" target="_blank" rel="noopener">Barber Shop</a>
+      </nav>
+
+      <div class="menu-drawer__discover">
+        <p class="menu-drawer__discover-title">Discovery</p>
+        <p class="menu-drawer__discover-sub">Johnny Berry — Tá Queimar</p>
+        <ul class="menu-drawer__music">
+          <li>
+            <a href="https://youtu.be/6vzUPh26JZA?si=xl3FzxXKTsRD6NoC" target="_blank" rel="noopener">
+              <img src="assets/icons/youtube.webp" alt="" width="88" height="28">
+              <span>YouTube</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://open.spotify.com/album/7LO9kumBSe1za71O5oKOjZ?si=1&nd=1&dlsi=8021751f937340e2" target="_blank" rel="noopener">
+              <img src="assets/icons/spotify.webp" alt="" width="88" height="28">
+              <span>Spotify</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://music.apple.com/us/album/t%C3%A1-queimar-feat-young-k-varox-007-single/6788576000" target="_blank" rel="noopener">
+              <img src="assets/icons/apple-music.webp" alt="" width="28" height="28">
+              <span>Apple Music</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.deezer.com/us/album/1023440431" target="_blank" rel="noopener">
+              <img src="assets/icons/deezer.webp" alt="" width="88" height="28">
+              <span>Deezer</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/results?search_query=Johnny+Berry+T%C3%A1+Queimar" target="_blank" rel="noopener">
+              <img src="assets/icons/youtube-music.webp" alt="" width="100" height="28">
+              <span>YouTube Music</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="hero">
+    <div class="hero__media" aria-hidden="true">
+      <video
+        class="hero__video is-visible"
+        id="hero-video-1"
+        muted
+        autoplay
+        playsinline
+        webkit-playsinline
+        loop
+        preload="auto"
+        poster="assets/images/hero-poster-1.webp"
+      >
+        <source src="assets/videos/hero-1.mp4" type="video/mp4">
+      </video>
+      <div class="hero__overlay"></div>
+    </div>
+    <div class="hero__content container">
+      <p class="hero__eyebrow">Beleza &amp; Estética · Luanda</p>
+      <h1 class="hero__title">Elegância<br>que se sente</h1>
+      <p class="hero__subtitle">Tratamentos premium pensados para realçar a sua beleza natural.</p>
+      <div class="hero__ctas">
+        <a href="#agendar" class="btn btn--primary">Agendar sessão</a>
+        <a href="#servicos" class="btn btn--ghost btn--on-dark">Ver serviços</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SERVICES ========== -->
+  <section class="section" id="servicos">
+    <div class="container">
+      <header class="section__header">
+        <p class="section__eyebrow">O que fazemos</p>
+        <h2 class="section__title">Serviços</h2>
+        <div class="section__line"></div>
+      </header>
+
+      <div class="services-grid">
+        <article class="service-card" data-service="Manicure">
+          <div class="service-card__image">
+            <img src="assets/images/service-manicure.webp" alt="Manicure" loading="lazy">
+          </div>
+          <div class="service-card__overlay">
+            <h3 class="service-card__title">Manicure</h3>
+            <p class="service-card__desc">Cuidado completo das unhas das mãos com acabamento impecável.</p>
+            <p class="service-card__price">Consultar preço</p>
+            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+          </div>
+        </article>
+
+        <article class="service-card" data-service="Pedicure">
+          <div class="service-card__image">
+            <img src="assets/images/service-pedicure.webp" alt="Pedicure" loading="lazy">
+          </div>
+          <div class="service-card__overlay">
+            <h3 class="service-card__title">Pedicure</h3>
+            <p class="service-card__desc">Tratamento relaxante e detalhado para os pés.</p>
+            <p class="service-card__price">Consultar preço</p>
+            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+          </div>
+        </article>
+
+        <article class="service-card" data-service="Unhas de Gel / Acrílico">
+          <div class="service-card__image">
+            <img src="assets/images/service-gel.webp" alt="Unhas de Gel / Acrílico" loading="lazy">
+          </div>
+          <div class="service-card__overlay">
+            <h3 class="service-card__title">Unhas de Gel / Acrílico</h3>
+            <p class="service-card__desc">Alongamentos e designs personalizados com materiais premium.</p>
+            <p class="service-card__price">Consultar preço</p>
+            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+          </div>
+        </article>
+
+        <article class="service-card" data-service="Design de Sobrancelhas">
+          <div class="service-card__image">
+            <img src="assets/images/service-sobrancelhas.webp" alt="Design de Sobrancelhas" loading="lazy">
+          </div>
+          <div class="service-card__overlay">
+            <h3 class="service-card__title">Design de Sobrancelhas</h3>
+            <p class="service-card__desc">Modelação e realce natural do olhar.</p>
+            <p class="service-card__price">Consultar preço</p>
+            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+          </div>
+        </article>
+
+        <article class="service-card" data-service="Tratamentos Faciais">
+          <div class="service-card__image">
+            <img src="assets/images/service-facial.webp" alt="Tratamentos Faciais" loading="lazy">
+          </div>
+          <div class="service-card__overlay">
+            <h3 class="service-card__title">Tratamentos Faciais</h3>
+            <p class="service-card__desc">Limpeza e cuidados para uma pele radiante.</p>
+            <p class="service-card__price">Consultar preço</p>
+            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+          </div>
+        </article>
+
+        <article class="service-card" data-service="Maquilhagem">
+          <div class="service-card__image">
+            <img src="assets/images/service-maquilhagem.webp" alt="Maquilhagem" loading="lazy">
+          </div>
+          <div class="service-card__overlay">
+            <h3 class="service-card__title">Maquilhagem</h3>
+            <p class="service-card__desc">Para ocasiões especiais ou o dia a dia com elegância.</p>
+            <p class="service-card__price">Consultar preço</p>
+            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+          </div>
+        </article>
+
+        <article class="service-card" data-service="Lavagem + Tranças">
+          <div class="service-card__image">
+            <img src="assets/images/service-trancas.webp" alt="Lavagem + Tranças" loading="lazy">
+          </div>
+          <div class="service-card__overlay">
+            <h3 class="service-card__title">Lavagem + Tranças</h3>
+            <p class="service-card__desc">Lavagem com massagem e tranças profissionais — para princesas de todas as idades.</p>
+            <p class="service-card__price">9.600 Kz</p>
+            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+          </div>
+        </article>
+      </div>
+
+      <p class="section__note">* Preços indicativos. Contacte-nos para confirmação e outros serviços.</p>
+    </div>
+  </section>
+
+  <!-- ========== EXPERIENCE ========== -->
+  <section class="section section--experience" id="experiencia">
+    <div class="container">
+      <header class="section__header">
+        <p class="section__eyebrow">Por dentro</p>
+        <h2 class="section__title">A Experiência Glamorize</h2>
+        <div class="section__line"></div>
+      </header>
+    </div>
+
+    <div class="experience-wrap">
+      <button type="button" class="experience-nav experience-nav--prev" id="experience-prev" aria-label="Anterior">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <div class="experience-track" id="experience-track">
+        <article class="experience-card">
+          <video class="experience-card__video" poster="assets/videos/poster-lavagem.webp" playsinline preload="metadata" controlsList="nodownload">
+            <source src="assets/videos/exp-lavagem.mp4" type="video/mp4">
+          </video>
+          <div class="experience-card__overlay">
+            <button type="button" class="experience-card__play" aria-label="Reproduzir">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <p class="experience-card__label">Lavagem &amp; Massagem</p>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <video class="experience-card__video" poster="assets/videos/poster-princesas.webp" playsinline preload="metadata" controlsList="nodownload">
+            <source src="assets/videos/exp-princesas.mp4" type="video/mp4">
+          </video>
+          <div class="experience-card__overlay">
+            <button type="button" class="experience-card__play" aria-label="Reproduzir">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <p class="experience-card__label">As Princesas</p>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <video class="experience-card__video" poster="assets/videos/poster-trancas.webp" playsinline preload="metadata" controlsList="nodownload">
+            <source src="assets/videos/exp-trancas.mp4" type="video/mp4">
+          </video>
+          <div class="experience-card__overlay">
+            <button type="button" class="experience-card__play" aria-label="Reproduzir">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <p class="experience-card__label">Lavagem + Tranças</p>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <video class="experience-card__video" poster="assets/videos/poster-cacheados.webp" playsinline preload="metadata" controlsList="nodownload">
+            <source src="assets/videos/exp-cacheados.mp4" type="video/mp4">
+          </video>
+          <div class="experience-card__overlay">
+            <button type="button" class="experience-card__play" aria-label="Reproduzir">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <p class="experience-card__label">Cacheados</p>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <video class="experience-card__video" poster="assets/videos/poster-boxbraids.webp" playsinline preload="metadata" controlsList="nodownload">
+            <source src="assets/videos/exp-boxbraids.mp4" type="video/mp4">
+          </video>
+          <div class="experience-card__overlay">
+            <button type="button" class="experience-card__play" aria-label="Reproduzir">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <p class="experience-card__label">Box Braids</p>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <video class="experience-card__video" poster="assets/videos/poster-equipa.webp" playsinline preload="metadata" controlsList="nodownload">
+            <source src="assets/videos/exp-equipa.mp4" type="video/mp4">
+          </video>
+          <div class="experience-card__overlay">
+            <button type="button" class="experience-card__play" aria-label="Reproduzir">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <p class="experience-card__label">A Equipa</p>
+          </div>
+        </article>
+      </div>
+
+      <button type="button" class="experience-nav experience-nav--next" id="experience-next" aria-label="Seguinte">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY ========== -->
+  <section class="section section--alt" id="galeria">
+    <div class="container">
+      <header class="section__header">
+        <p class="section__eyebrow">Trabalhos</p>
+        <h2 class="section__title">Galeria</h2>
+        <div class="section__line"></div>
+      </header>
+
+      <div class="gallery-grid" id="gallery-grid">
+        <figure class="gallery-item">
+          <img src="assets/images/gallery/gallery-1.webp" alt="Unhas de gel matte coral — Glamorize" loading="lazy">
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/images/gallery/gallery-2.webp" alt="Look glam com cabelo ondulado e maquilhagem" loading="lazy">
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/images/gallery/gallery-3.webp" alt="Momentos especiais com as princesas da Glamorize" loading="lazy">
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/images/gallery/gallery-4.webp" alt="Tranças box braids com pontas cacheadas" loading="lazy">
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/images/gallery/gallery-5.webp" alt="Penteado com elásticos e coque para criança" loading="lazy">
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/images/gallery/gallery-6.webp" alt="Coque baixo com baby hair" loading="lazy">
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/images/gallery/gallery-7.webp" alt="Tranças infantis com detalhes em fio rosa" loading="lazy">
+        </figure>
+      </div>
+
+      <div class="section__cta-wrap">
+        <a href="https://www.instagram.com/glamorize_by_eldocarmo/" class="btn btn--ghost" target="_blank" rel="noopener">
+          Ver mais no Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LUBANGO ========== -->
+  <section class="section section--lubango" id="lubango">
+    <div class="container">
+      <div class="lubango-hero">
+        <img class="lubango-hero__img" src="assets/images/lubango.webp" alt="Letras LUBANGO iluminadas — marco da cidade" loading="lazy">
+        <div class="lubango-hero__gradient"></div>
+        <div class="lubango-hero__content">
+          <p class="lubango-hero__eyebrow">Expansão</p>
+          <h2 class="lubango-hero__title">Lubango — Estamos a chegar</h2>
+          <p class="lubango-hero__text">A Eldo Carmo está a reforçar a sua equipa no Lubango e quer contar contigo.</p>
+
+          <div class="lubango-roles">
+            <span>Técnicos de Unhas</span>
+            <span>Manicure &amp; Pedicure</span>
+            <span>Atendimento ao Público</span>
+          </div>
+
+          <p class="lubango-location">
+            <strong>Local:</strong> Bairro Lucrécia, Lubango
+          </p>
+
+          <p class="lubango-contact">
+            <strong>Candidaturas:</strong> recrutamento.eldocarmo@gmail.com<br>
+            <strong>WhatsApp:</strong> 924 071 971
+          </p>
+
+          <a href="https://wa.me/244924071971?text=Olá! Tenho interesse em candidatar-me para a equipa Eldo Carmo Glamorize no Lubango." class="btn btn--primary" target="_blank" rel="noopener">
+            Candidatar-me
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AGENDAR ========== -->
+  <section class="section" id="agendar">
+    <div class="container">
+      <header class="section__header">
+        <p class="section__eyebrow">Reservas</p>
+        <h2 class="section__title">Agendar sessão</h2>
+        <div class="section__line"></div>
+      </header>
+
+      <div class="contact-grid">
+        <form class="contact-form" id="booking-form">
+          <div class="form-group">
+            <label for="name">Nome *</label>
+            <input type="text" id="name" name="name" required placeholder="O seu nome" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefone <span class="optional">(opcional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="9XX XXX XXX" autocomplete="tel">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="people">Nº de pessoas <span class="optional">(opcional)</span></label>
+              <input type="number" id="people" name="people" min="1" max="20" placeholder="1">
+            </div>
+            <div class="form-group">
+              <label for="service">Serviço desejado *</label>
+              <select id="service" name="service" required>
+                <option value="">Seleccione…</option>
+                <option value="Manicure">Manicure</option>
+                <option value="Pedicure">Pedicure</option>
+                <option value="Unhas de Gel / Acrílico">Unhas de Gel / Acrílico</option>
+                <option value="Design de Sobrancelhas">Design de Sobrancelhas</option>
+                <option value="Tratamentos Faciais">Tratamentos Faciais</option>
+                <option value="Maquilhagem">Maquilhagem</option>
+                <option value="Lavagem + Tranças">Lavagem + Tranças</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date">Data *</label>
+              <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+              <label for="time">Hora *</label>
+              <input type="time" id="time" name="time" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Mensagem <span class="optional">(opcional)</span></label>
+            <textarea id="message" name="message" rows="3" placeholder="Algum detalhe adicional?"></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full">Enviar via WhatsApp</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="footer__name">Eldo Carmo Glamorize</span>
+        <span class="footer__sub">Beleza &amp; Estética</span>
+      </div>
+      <div class="footer__contact">
+        <a href="https://wa.me/244935627443" target="_blank" rel="noopener">WhatsApp 935 627 443</a>
+        <span class="footer__sep">·</span>
+        <a href="mailto:glamorize@eldocarmo.com">glamorize@eldocarmo.com</a>
+        <span class="footer__sep">·</span>
+        <span>Kilamba · Salão R3 · Luanda</span>
+        <span class="footer__sep">·</span>
+        <span>Todos os dias · 07:00 – 21:00</span>
+      </div>
+      <div class="footer__social">
+        <a href="https://www.instagram.com/glamorize_by_eldocarmo/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a href="https://www.facebook.com/EldoCarmoBeleza" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"/>
+          </svg>
+        </a>
+      </div>
+      <p class="footer__copy">© 2026 Eldo Carmo Empreendimentos. Todos os direitos reservados.</p>
+      <div class="footer__links">
+        <a href="https://eldocarmo.workersdevao.workers.dev" target="_blank" rel="noopener">Portal</a>
+        <a href="https://eldocarmobarbershop.workersdevao.workers.dev" target="_blank" rel="noopener">Barber Shop</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
