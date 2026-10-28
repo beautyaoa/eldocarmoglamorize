@@ -11,9 +11,9 @@ No frameworks. No build step. Ready for Cloudflare Pages + GitHub.
 
 | Site | Folder | Final domain | Preview (current) | Description |
 |------|--------|--------------|-------------------|-------------|
-| **Portal** | `/portal` | eldocarmo.com | [eldocarmo.workersdevao.workers.dev](https://eldocarmo.workersdevao.workers.dev/) | Split-image gateway. Left → Glamorize · Right → Barber Shop |
-| **Barbershop** | `/barbershop` | eldocarmobarbershop.com | [eldocarmobarbershop.workersdevao.workers.dev](https://eldocarmobarbershop.workersdevao.workers.dev) | Full men's site: services, mini-bar + cart → WhatsApp, gallery, Lubango recruitment |
-| **Glamorize** | `/glamorize` | eldocarmoglamorize.com | [eldocarmoglamorize.workersdevao.workers.dev](https://eldocarmoglamorize.workersdevao.workers.dev) | Full women's beauty site: services, gallery, contact |
+| **Portal** | `/portal` | eldocarmo.com | [eldocarmo.pages.dev](https://eldocarmo.pages.dev/) | Split-image gateway. Left → Glamorize · Right → Barber Shop |
+| **Barbershop** | `/barbershop` | eldocarmobarbershop.com | [eldocarmobarbershop.pages.dev](https://eldocarmobarbershop.pages.dev) | Full men's site: services, mini-bar + cart → WhatsApp, gallery, Lubango recruitment |
+| **Glamorize** | `/glamorize` | eldocarmoglamorize.com | [eldocarmoglamorize.pages.dev](https://eldocarmoglamorize.pages.dev) | Full women's beauty site: services, gallery, contact |
 
 Each folder is a complete, self-contained site intended for its own GitHub repository.
 
@@ -224,16 +224,16 @@ Glamorize block centered in the top half; bottom padding keeps ENTRAR clear of t
 
 ### 2026-09-29 — Preview URLs wired up
 
-Cross-site links updated to current Cloudflare Workers preview domains.
+Cross-site links updated to current Cloudflare Pages domains.
 
 **Portal**
-- `portal/index.html` (Glamorize + Barbershop hrefs → workers.dev)
+- `portal/index.html` (Glamorize + Barbershop hrefs → pages.dev)
 
 **Barbershop**
-- `barbershop/index.html` (footer → portal workers.dev)
+- `barbershop/index.html` (footer → portal pages.dev)
 
 **Glamorize**
-- `glamorize/index.html` (footer → portal workers.dev)
+- `glamorize/index.html` (footer → portal pages.dev)
 
 **Root**
 - `README.md` (architecture table + preview links)
