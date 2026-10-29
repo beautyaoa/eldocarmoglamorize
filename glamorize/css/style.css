@@ -1395,3 +1395,28 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* ========== MINI-BAR TEASER CARD ========== */
 .minibar-card {
+
+/* Booking form status */
+.form-status {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-align: center;
+}
+.form-status--success {
+  background: rgba(34, 160, 90, 0.15);
+  border: 1px solid rgba(34, 160, 90, 0.45);
+  color: #7ddea8;
+}
+.form-status--warn {
+  background: rgba(200, 150, 40, 0.12);
+  border: 1px solid rgba(200, 150, 40, 0.4);
+  color: #e8c56a;
+}
+.form-status--error {
+  background: rgba(200, 60, 60, 0.12);
+  border: 1px solid rgba(200, 60, 60, 0.4);
+  color: #f0a0a0;
+}
