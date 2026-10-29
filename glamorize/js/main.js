@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Booking form → WhatsApp
-  bookingForm?.addEventListener('submit', (e) => {
+  // Booking form → Admin API
+  bookingForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('name')?.value.trim() || '';
     const phone = document.getElementById('phone')?.value.trim() || '';
@@ -104,16 +104,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!name || !service || !date || !time) return;
 
-    let text = `Olá! Gostaria de agendar na Glamorize.\n\n`;
-    text += `Nome: ${name}\n`;
-    if (phone) text += `Telefone: ${phone}\n`;
-    if (people) text += `Nº de pessoas: ${people}\n`;
-    text += `Serviço: ${service}\n`;
-    text += `Data: ${date}\n`;
-    text += `Hora: ${time}\n`;
-    if (message) text += `\nMensagem: ${message}`;
+    const submitBtn = bookingForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'A enviar…';
+    }
 
-    window.open(`https://wa.me/244935627443?text=${encodeURIComponent(text)}`, '_blank');
+    const booking = {
+      id: 'bk_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+      type: 'booking',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      customer: { name, phone: phone || '' },
+      people: people ? Number(people) : null,
+      service,
+      date,
+      time,
+      notes: message || ''
+    };
+
+    const workerUrl = (window.GLAMORIZE_CONFIG && window.GLAMORIZE_CONFIG.workerUrl) || '';
+    let ok = false;
+
+    if (workerUrl) {
+      try {
+        const res = await fetch(workerUrl.replace(/\/$/, '') + '/booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(booking)
+        });
+        ok = res.ok;
+      } catch (err) {
+        console.warn('Booking API', err);
+      }
+    }
+
+    if (!ok) {
+      try {
+        const key = 'glamorize_bookings_local';
+        const list = JSON.parse(localStorage.getItem(key) || '[]');
+        list.unshift(booking);
+        localStorage.setItem(key, JSON.stringify(list.slice(0, 100)));
+      } catch (_) {}
+    }
+
+    bookingForm.reset();
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
+    alert(
+      ok
+        ? 'Pedido de agendamento enviado! A equipa confirma em breve.'
+        : workerUrl
+          ? 'Não foi possível enviar agora. Tente novamente dentro de momentos.'
+          : 'Pedido guardado localmente. Configure a API para receber agendamentos no painel.'
+    );
   });
 
   // ---------- Experience videos (full play with sound) ----------

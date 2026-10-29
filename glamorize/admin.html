@@ -65,6 +65,10 @@
           <span class="nav-icon">☰</span> Encomendas
           <span class="nav-badge" id="orders-badge" hidden>0</span>
         </button>
+        <button type="button" data-tab="bookings" class="nav-item">
+          <span class="nav-icon">◷</span> Agendamentos
+          <span class="nav-badge" id="bookings-badge" hidden>0</span>
+        </button>
         <button type="button" data-tab="products" class="nav-item">
           <span class="nav-icon">◇</span> Produtos
         </button>
@@ -97,16 +101,16 @@
             <strong class="stat-value" id="stat-pending">—</strong>
           </div>
           <div class="stat-card">
+            <span class="stat-label">Agendamentos pendentes</span>
+            <strong class="stat-value" id="stat-bookings-pending">—</strong>
+          </div>
+          <div class="stat-card">
             <span class="stat-label">Total encomendas</span>
             <strong class="stat-value" id="stat-total">—</strong>
           </div>
           <div class="stat-card">
-            <span class="stat-label">Produtos activos</span>
-            <strong class="stat-value" id="stat-products">—</strong>
-          </div>
-          <div class="stat-card">
-            <span class="stat-label">Zonas activas</span>
-            <strong class="stat-value" id="stat-zones">—</strong>
+            <span class="stat-label">Total agendamentos</span>
+            <strong class="stat-value" id="stat-bookings-total">—</strong>
           </div>
         </div>
         <div class="dash-card">
@@ -114,13 +118,18 @@
           <div id="dash-orders"></div>
           <button type="button" class="link-btn" data-goto="orders">Ver todas →</button>
         </div>
+        <div class="dash-card">
+          <h2>Últimos agendamentos</h2>
+          <div id="dash-bookings"></div>
+          <button type="button" class="link-btn" data-goto="bookings">Ver todos →</button>
+        </div>
         <div class="dash-card dash-card--hint" id="connection-hint"></div>
       </section>
 
       <!-- Orders -->
       <section class="admin-panel" data-panel="orders">
         <div class="panel-toolbar">
-          <div class="filter-row">
+          <div class="filter-row" id="orders-filters">
             <button type="button" class="filter-chip is-active" data-filter="all">Todas</button>
             <button type="button" class="filter-chip" data-filter="pending">Pendentes</button>
             <button type="button" class="filter-chip" data-filter="confirmed">Confirmadas</button>
@@ -129,6 +138,20 @@
           <button type="button" id="btn-refresh-orders" class="tool-btn">Actualizar</button>
         </div>
         <div id="orders-list"></div>
+      </section>
+
+      <!-- Bookings -->
+      <section class="admin-panel" data-panel="bookings">
+        <div class="panel-toolbar">
+          <div class="filter-row" id="bookings-filters">
+            <button type="button" class="filter-chip is-active" data-bk-filter="all">Todos</button>
+            <button type="button" class="filter-chip" data-bk-filter="pending">Pendentes</button>
+            <button type="button" class="filter-chip" data-bk-filter="confirmed">Confirmados</button>
+            <button type="button" class="filter-chip" data-bk-filter="delivered">Entregues</button>
+          </div>
+          <button type="button" id="btn-refresh-bookings" class="tool-btn">Actualizar</button>
+        </div>
+        <div id="bookings-list"></div>
       </section>
 
       <!-- Products -->

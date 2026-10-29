@@ -10,9 +10,11 @@
   const PW_KEY = 'glamorize_admin_pw';
   const REMEMBER_KEY = 'glamorize_admin_remember';
   const ORDERS_LOCAL = 'glamorize_orders_local';
+  const BOOKINGS_LOCAL = 'glamorize_bookings_local';
   const TITLES = {
     dashboard: 'Painel',
     orders: 'Encomendas',
+    bookings: 'Agendamentos',
     products: 'Produtos',
     zones: 'Zonas',
     images: 'Imagens'
@@ -21,6 +23,8 @@
   let catalog = structuredClone(DEFAULTS);
   let orders = [];
   let orderFilter = 'all';
+  let bookings = [];
+  let bookingFilter = 'all';
   let mediaLibrary = [];
   let editingProductId = null;
   let productSearch = '';
@@ -428,14 +432,194 @@
     setStatus('Encomenda eliminada');
   }
 
+  /* ——— Bookings ——— */
+  function getLocalBookings() {
+    try {
+      return JSON.parse(localStorage.getItem(BOOKINGS_LOCAL) || '[]');
+    } catch (_) {
+      return [];
+    }
+  }
+
+  async function loadBookings() {
+    const listEl = document.getElementById('bookings-list');
+    if (listEl) listEl.innerHTML = '<p class="muted">A carregar agendamentos…</p>';
+
+    let remote = [];
+    if (CONFIG.workerUrl) {
+      try {
+        const res = await fetch(CONFIG.workerUrl.replace(/\/$/, '') + '/bookings', {
+          headers: { 'X-Admin-Password': getPassword() }
+        });
+        if (res.ok) remote = await res.json();
+        else if (res.status === 401) setStatus('Password incorrecta para a API');
+      } catch (e) {
+        console.warn('Bookings API', e);
+        setStatus('Não foi possível contactar a API de agendamentos');
+      }
+    }
+
+    bookings = mergeOrders(remote, getLocalBookings());
+    renderBookings();
+    updateDashboard();
+  }
+
+  function filteredBookings() {
+    if (bookingFilter === 'all') return bookings;
+    return bookings.filter((b) => (b.status || 'pending') === bookingFilter);
+  }
+
+  function formatBookingDate(dateStr, timeStr) {
+    if (!dateStr) return '—';
+    try {
+      const [y, m, d] = dateStr.split('-');
+      return `${d}/${m}/${y}` + (timeStr ? ' · ' + timeStr : '');
+    } catch (_) {
+      return dateStr + (timeStr ? ' · ' + timeStr : '');
+    }
+  }
+
+  function renderBookings() {
+    const listEl = document.getElementById('bookings-list');
+    const dashEl = document.getElementById('dash-bookings');
+    const badge = document.getElementById('bookings-badge');
+    const pending = bookings.filter((b) => (b.status || 'pending') === 'pending').length;
+    if (badge) {
+      badge.hidden = pending === 0;
+      badge.textContent = pending;
+    }
+
+    const list = filteredBookings();
+    const html = !list.length
+      ? '<div class="empty-state">Nenhum agendamento neste filtro.</div>'
+      : list
+          .map((b) => {
+            return `
+        <article class="order-card" data-id="${escapeAttr(b.id)}">
+          <header>
+            <strong>${escapeHtml(b.customer?.name || '—')}</strong>
+            <span class="badge badge--${escapeAttr(b.status || 'pending')}">${escapeHtml(
+              statusLabel(b.status)
+            )}</span>
+          </header>
+          <p class="order-meta">${formatDate(b.createdAt)} · ${escapeHtml(b.customer?.phone || '—')}</p>
+          <p class="order-items"><strong>${escapeHtml(b.service || '—')}</strong></p>
+          <p class="order-addr">${escapeHtml(formatBookingDate(b.date, b.time))}${
+              b.people ? ' · ' + escapeHtml(String(b.people)) + ' pessoa(s)' : ''
+            }</p>
+          ${
+            b.notes
+              ? '<p class="order-notes">' + escapeHtml(b.notes) + '</p>'
+              : ''
+          }
+          ${orderActionsHtml()}
+        </article>`;
+          })
+          .join('');
+
+    if (listEl) {
+      listEl.innerHTML = html;
+      bindBookingCardActions(listEl);
+    }
+    if (dashEl) {
+      const recent = bookings.slice(0, 5);
+      dashEl.innerHTML = !recent.length
+        ? '<p class="muted">Sem agendamentos recentes.</p>'
+        : recent
+            .map(
+              (b) => `
+          <div class="dash-row">
+            <span>${escapeHtml(b.customer?.name || '—')} · ${escapeHtml(b.service || '')}</span>
+            <span class="badge badge--${escapeAttr(b.status || 'pending')}">${escapeHtml(
+              statusLabel(b.status)
+            )}</span>
+          </div>`
+            )
+            .join('');
+    }
+  }
+
+  function bindBookingCardActions(root) {
+    if (!root) return;
+    root.querySelectorAll('.order-actions button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.closest('.order-card')?.dataset.id;
+        if (!id) return;
+        if (btn.dataset.action === 'delete') {
+          deleteBooking(id);
+        } else if (btn.dataset.status) {
+          updateBookingStatus(id, btn.dataset.status);
+        }
+      });
+    });
+  }
+
+  async function updateBookingStatus(id, status) {
+    if (CONFIG.workerUrl) {
+      try {
+        const res = await fetch(
+          CONFIG.workerUrl.replace(/\/$/, '') + '/bookings/' + encodeURIComponent(id),
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Admin-Password': getPassword()
+            },
+            body: JSON.stringify({ status })
+          }
+        );
+        if (!res.ok) throw new Error('Falha ao actualizar');
+      } catch (e) {
+        setStatus('Erro ao actualizar: ' + e.message);
+      }
+    }
+    let local = getLocalBookings();
+    local = local.map((b) => (b.id === id ? { ...b, status, updatedAt: new Date().toISOString() } : b));
+    localStorage.setItem(BOOKINGS_LOCAL, JSON.stringify(local));
+    bookings = bookings.map((b) => (b.id === id ? { ...b, status } : b));
+    localStorage.setItem(BOOKINGS_LOCAL, JSON.stringify(mergeOrders(bookings, local)));
+    renderBookings();
+    updateDashboard();
+    setStatus('Estado actualizado');
+  }
+
+  async function deleteBooking(id) {
+    if (!confirm('Eliminar este agendamento permanentemente? Esta acção não pode ser desfeita.')) {
+      return;
+    }
+    if (CONFIG.workerUrl) {
+      try {
+        const res = await fetch(
+          CONFIG.workerUrl.replace(/\/$/, '') + '/bookings/' + encodeURIComponent(id),
+          {
+            method: 'DELETE',
+            headers: { 'X-Admin-Password': getPassword() }
+          }
+        );
+        if (!res.ok && res.status !== 404) throw new Error('Falha ao eliminar');
+      } catch (e) {
+        setStatus('Erro ao eliminar: ' + e.message);
+      }
+    }
+    const local = getLocalBookings().filter((b) => b.id !== id);
+    localStorage.setItem(BOOKINGS_LOCAL, JSON.stringify(local));
+    bookings = bookings.filter((b) => b.id !== id);
+    renderBookings();
+    updateDashboard();
+    setStatus('Agendamento eliminado');
+  }
+
   function updateDashboard() {
     const pending = orders.filter((o) => (o.status || 'pending') === 'pending').length;
+    const bkPending = bookings.filter((b) => (b.status || 'pending') === 'pending').length;
     const set = (id, v) => {
       const el = document.getElementById(id);
       if (el) el.textContent = v;
     };
     set('stat-pending', pending);
     set('stat-total', orders.length);
+    set('stat-bookings-pending', bkPending);
+    set('stat-bookings-total', bookings.length);
     set(
       'stat-products',
       (catalog.products || []).filter((p) => p.active !== false).length
@@ -882,6 +1066,7 @@
     const title = document.getElementById('page-title');
     if (title) title.textContent = TITLES[tab] || tab;
     if (tab === 'orders' || tab === 'dashboard') loadOrders();
+    if (tab === 'bookings' || tab === 'dashboard') loadBookings();
     closeSidebar();
   }
 
@@ -904,12 +1089,21 @@
     document.getElementById('sidebar-toggle')?.addEventListener('click', openSidebar);
     document.getElementById('sidebar-overlay')?.addEventListener('click', closeSidebar);
 
-    document.querySelectorAll('.filter-chip').forEach((chip) => {
+    document.querySelectorAll('#orders-filters .filter-chip').forEach((chip) => {
       chip.addEventListener('click', () => {
-        document.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('is-active'));
+        document.querySelectorAll('#orders-filters .filter-chip').forEach((c) => c.classList.remove('is-active'));
         chip.classList.add('is-active');
         orderFilter = chip.dataset.filter;
         renderOrders();
+      });
+    });
+
+    document.querySelectorAll('#bookings-filters .filter-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('#bookings-filters .filter-chip').forEach((c) => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+        bookingFilter = chip.dataset.bkFilter;
+        renderBookings();
       });
     });
 
@@ -918,11 +1112,13 @@
     renderProductsEditor();
     renderZonesEditor();
     await loadOrders();
+    await loadBookings();
 
     document.getElementById('btn-save-draft')?.addEventListener('click', saveDraft);
     document.getElementById('btn-publish')?.addEventListener('click', publish);
     document.getElementById('btn-logout')?.addEventListener('click', logout);
     document.getElementById('btn-refresh-orders')?.addEventListener('click', loadOrders);
+    document.getElementById('btn-refresh-bookings')?.addEventListener('click', loadBookings);
     document.getElementById('add-product-btn')?.addEventListener('click', addProduct);
     document.getElementById('add-zone-btn')?.addEventListener('click', addZone);
 
