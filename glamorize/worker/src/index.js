@@ -13,6 +13,10 @@
  *   GET  /orders           X-Admin-Password → list
  *   PATCH /orders/:id      { status } + password
  *   DELETE /orders/:id     password → remove from KV + index
+ *   POST /booking          booking object → KV (__bookings_index)
+ *   GET  /bookings         X-Admin-Password → list
+ *   PATCH /bookings/:id    { status } + password
+ *   DELETE /bookings/:id   password → remove from KV + index
  */
 
 const CORS = {
@@ -162,7 +166,79 @@ export default {
         return json({ ok: true, id });
       }
 
-      return json({ error: 'Not found', routes: ['/publish', '/order', '/orders', '/orders/:id'] }, 404);
+      // ——— NEW BOOKING ———
+      if (path === '/booking' && request.method === 'POST') {
+        const booking = await request.json();
+        if (!booking || !booking.id || !booking.customer?.name || !booking.service || !booking.date || !booking.time) {
+          return json({ error: 'Invalid booking' }, 400);
+        }
+        booking.type = 'booking';
+        booking.status = booking.status || 'pending';
+        booking.createdAt = booking.createdAt || new Date().toISOString();
+        await env.ORDERS.put(booking.id, JSON.stringify(booking));
+        let index = [];
+        try {
+          index = JSON.parse((await env.ORDERS.get('__bookings_index')) || '[]');
+        } catch (_) {}
+        index = [booking.id, ...index.filter((id) => id !== booking.id)].slice(0, 500);
+        await env.ORDERS.put('__bookings_index', JSON.stringify(index));
+        return json({ ok: true, id: booking.id });
+      }
+
+      // ——— LIST BOOKINGS ———
+      if (path === '/bookings' && request.method === 'GET') {
+        const pw = request.headers.get('X-Admin-Password') || '';
+        if (pw !== env.ADMIN_PASSWORD) return unauthorized();
+        let index = [];
+        try {
+          index = JSON.parse((await env.ORDERS.get('__bookings_index')) || '[]');
+        } catch (_) {}
+        const bookings = [];
+        for (const id of index) {
+          const raw = await env.ORDERS.get(id);
+          if (raw) {
+            try {
+              bookings.push(JSON.parse(raw));
+            } catch (_) {}
+          }
+        }
+        return json(bookings);
+      }
+
+      // ——— UPDATE / DELETE BOOKING ———
+      const bookingMatch = path.match(/^\/bookings\/([^/]+)$/);
+      if (bookingMatch && request.method === 'PATCH') {
+        const pw = request.headers.get('X-Admin-Password') || '';
+        if (pw !== env.ADMIN_PASSWORD) return unauthorized();
+        const id = decodeURIComponent(bookingMatch[1]);
+        const raw = await env.ORDERS.get(id);
+        if (!raw) return json({ error: 'Not found' }, 404);
+        const booking = JSON.parse(raw);
+        const body = await request.json();
+        if (body.status) booking.status = body.status;
+        booking.updatedAt = new Date().toISOString();
+        await env.ORDERS.put(id, JSON.stringify(booking));
+        return json({ ok: true, booking });
+      }
+
+      if (bookingMatch && request.method === 'DELETE') {
+        const pw = request.headers.get('X-Admin-Password') || '';
+        if (pw !== env.ADMIN_PASSWORD) return unauthorized();
+        const id = decodeURIComponent(bookingMatch[1]);
+        await env.ORDERS.delete(id);
+        let index = [];
+        try {
+          index = JSON.parse((await env.ORDERS.get('__bookings_index')) || '[]');
+        } catch (_) {}
+        index = index.filter((x) => x !== id);
+        await env.ORDERS.put('__bookings_index', JSON.stringify(index));
+        return json({ ok: true, id });
+      }
+
+      return json({
+        error: 'Not found',
+        routes: ['/publish', '/order', '/orders', '/orders/:id', '/booking', '/bookings', '/bookings/:id']
+      }, 404);
     } catch (e) {
       return json({ error: e.message || 'Server error' }, 500);
     }
