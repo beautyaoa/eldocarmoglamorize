@@ -146,7 +146,7 @@ window.GLAMORIZE_CONFIG = {
   catalogFolder: 'glamorize',
   catalogPublicId: 'glamorize/catalog',
   // Set after Worker is deployed:
-  workerUrl: 'https://eldocarmoglamorize-api.<your-subdomain>.workers.dev',
+  workerUrl: 'https://eldocarmoglamorize-api.beautyaoa.workers.dev',
   get catalogUrl() {
     return `https://res.cloudinary.com/${this.cloudName}/raw/upload/${this.catalogFolder}/catalog.json`;
   }
