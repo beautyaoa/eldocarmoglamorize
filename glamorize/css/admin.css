@@ -912,3 +912,99 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
+
+/* ——— CMS: Conteúdo / Galeria ——— */
+.content-editor { display: flex; flex-direction: column; gap: 1.5rem; }
+.content-group {
+  background: var(--card, #141414);
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+.content-group__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted, #888);
+}
+.content-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted, #aaa);
+}
+.content-field input,
+.content-field textarea {
+  background: #0d0d0d;
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  color: #fff;
+  font: inherit;
+}
+.content-field--image {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: end;
+  margin-bottom: 0.75rem;
+}
+.content-field--image label { grid-column: 1 / -1; }
+.preview-img {
+  max-width: 120px;
+  max-height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-top: 0.35rem;
+}
+.image-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: end;
+  margin-top: 0.5rem;
+}
+.gallery-editor {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.gallery-edit-card {
+  background: var(--card, #141414);
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.gallery-edit-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #0d0d0d;
+}
+.gallery-edit-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--muted, #888);
+}
+.gallery-edit-card input {
+  background: #0d0d0d;
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+  color: #fff;
+  font: inherit;
+}
+.gallery-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}

@@ -10,6 +10,136 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuClose = document.getElementById('menu-close');
   const bookingForm = document.getElementById('booking-form');
 
+  /* ——— CMS: published catalog → texts / services / gallery ——— */
+  async function loadAndApplyCms() {
+    const defaults = window.GLAMORIZE_DEFAULTS || {};
+    let catalog = defaults;
+    const cfg = window.GLAMORIZE_CONFIG;
+    if (cfg && cfg.catalogUrl) {
+      try {
+        const res = await fetch(cfg.catalogUrl + '?t=' + Date.now());
+        if (res.ok) {
+          const remote = await res.json();
+          catalog = {
+            ...defaults,
+            ...remote,
+            products: Array.isArray(remote.products) ? remote.products : defaults.products,
+            gallery: Array.isArray(remote.gallery) ? remote.gallery : defaults.gallery,
+            site: { ...(defaults.site || {}), ...(remote.site || {}) }
+          };
+        }
+      } catch (_) {}
+    }
+    applySiteContent(catalog.site || defaults.site || {});
+    // Homepage services = products
+    renderServices(catalog.products || defaults.products || []);
+    renderGallery(catalog.gallery || defaults.gallery || []);
+    const select = document.getElementById('service');
+    if (select && Array.isArray(catalog.products)) {
+      const active = catalog.products.filter((s) => s.active !== false).sort((a, b) => (a.order || 0) - (b.order || 0));
+      if (active.length) {
+        const current = select.value;
+        select.innerHTML =
+          '<option value="">Seleccione o serviço</option>' +
+          active.map((s) => `<option value="${s.name}">${s.name}</option>`).join('');
+        if (current) select.value = current;
+      }
+    }
+  }
+
+  function applySiteContent(site) {
+    if (!site) return;
+    const setText = (key, html) => {
+      document.querySelectorAll(`[data-cms="${key}"]`).forEach((el) => {
+        if (el.tagName === 'IMG') {
+          if (site[key]) el.src = site[key];
+          return;
+        }
+        if (html) el.innerHTML = String(site[key] || '').replace(/\n/g, '<br>');
+        else if (site[key] != null && site[key] !== '') el.textContent = site[key];
+      });
+    };
+    setText('heroEyebrow');
+    setText('heroTitle', true);
+    setText('heroSubtitle');
+    setText('servicesEyebrow');
+    setText('servicesTitle');
+    setText('servicesNote');
+    setText('experienceEyebrow');
+    setText('experienceTitle');
+    setText('galleryEyebrow');
+    setText('galleryTitle');
+    setText('bookingEyebrow');
+    setText('bookingTitle');
+    const announce = document.querySelector('[data-cms="announce"]');
+    if (announce) {
+      if (site.announceText) announce.innerHTML = site.announceText;
+      if (site.announceHref) announce.href = site.announceHref;
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function escapeAttr(str) {
+    return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  function renderServices(services) {
+    const grid = document.getElementById('services-grid');
+    if (!grid) return;
+    const list = (services || [])
+      .filter((s) => s.active !== false)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    if (!list.length) return;
+    grid.innerHTML = list
+      .map((s) => {
+        const price =
+          s.priceLabel ||
+          (s.price > 0 ? Number(s.price).toLocaleString('pt-AO') + ' Kz' : 'Consultar preço');
+        return `
+      <article class="service-card" data-service="${escapeAttr(s.name)}">
+        <div class="service-card__image">
+          <img src="${escapeAttr(s.image || '')}" alt="${escapeAttr(s.name)}" loading="lazy">
+        </div>
+        <div class="service-card__overlay">
+          <h3 class="service-card__title">${escapeHtml(s.name)}</h3>
+          <p class="service-card__desc">${escapeHtml(s.description || '')}</p>
+          <p class="service-card__price">${escapeHtml(price)}</p>
+          <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
+        </div>
+      </article>`;
+      })
+      .join('');
+    grid.querySelectorAll('.agendar-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.service-card');
+        const service = card?.dataset.service;
+        const select = document.getElementById('service');
+        if (service && select) select.value = service;
+      });
+    });
+  }
+
+  function renderGallery(items) {
+    const grid = document.getElementById('gallery-grid');
+    if (!grid || !items || !items.length) return;
+    grid.innerHTML = items
+      .map(
+        (g) => `
+      <figure class="gallery-item">
+        <img src="${escapeAttr(g.image || '')}" alt="${escapeAttr(g.alt || '')}" loading="lazy">
+      </figure>`
+      )
+      .join('');
+  }
+
+  loadAndApplyCms();
+
   const openMenu = () => {
     hamburger?.classList.add('is-active');
     menuDrawer?.classList.add('is-open');

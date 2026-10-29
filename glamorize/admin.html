@@ -70,7 +70,13 @@
           <span class="nav-badge" id="bookings-badge" hidden>0</span>
         </button>
         <button type="button" data-tab="products" class="nav-item">
-          <span class="nav-icon">◇</span> Produtos
+          <span class="nav-icon">◇</span> Serviços
+        </button>
+        <button type="button" data-tab="content" class="nav-item">
+          <span class="nav-icon">✎</span> Conteúdo
+        </button>
+        <button type="button" data-tab="gallery" class="nav-item">
+          <span class="nav-icon">▦</span> Galeria
         </button>
         <button type="button" data-tab="zones" class="nav-item">
           <span class="nav-icon">◎</span> Zonas
@@ -154,16 +160,33 @@
         <div id="bookings-list"></div>
       </section>
 
-      <!-- Products -->
+      <!-- Services (products drive homepage) -->
       <section class="admin-panel" data-panel="products">
         <div class="panel-toolbar panel-toolbar--products">
           <div class="products-toolbar-left">
-            <input type="search" id="product-search" class="search-input" placeholder="Pesquisar produtos…" autocomplete="off">
-            <p class="panel-hint">Toque em <strong>Editar</strong> para alterar · arraste para reordenar · depois <strong>Guardar</strong> ou <strong>Publicar</strong>.</p>
+            <input type="search" id="product-search" class="search-input" placeholder="Pesquisar serviços…" autocomplete="off">
+            <p class="panel-hint">Serviços da página · toque em <strong>Editar</strong> · carregue imagem · depois <strong>Guardar</strong> ou <strong>Publicar</strong>.</p>
           </div>
-          <button type="button" id="add-product-btn" class="tool-btn tool-btn--primary">+ Produto</button>
+          <button type="button" id="add-product-btn" class="tool-btn tool-btn--primary">+ Serviço</button>
         </div>
         <div id="products-editor"></div>
+      </section>
+
+      <!-- Site content -->
+      <section class="admin-panel" data-panel="content">
+        <div class="panel-toolbar">
+          <p class="panel-hint">Textos e imagens principais do site. Alterações só ficam públicas após <strong>Publicar</strong>.</p>
+        </div>
+        <div id="content-editor" class="content-editor"></div>
+      </section>
+
+      <!-- Gallery -->
+      <section class="admin-panel" data-panel="gallery">
+        <div class="panel-toolbar">
+          <p class="panel-hint">Imagens da galeria · carregue para substituir · depois <strong>Publicar</strong>.</p>
+          <button type="button" id="add-gallery-btn" class="tool-btn tool-btn--primary">+ Imagem</button>
+        </div>
+        <div id="gallery-editor" class="gallery-editor"></div>
       </section>
 
       <!-- Zones -->
@@ -175,10 +198,10 @@
         <div id="zones-editor"></div>
       </section>
 
-      <!-- Images -->
+      <!-- Images library -->
       <section class="admin-panel" data-panel="images">
         <div class="panel-toolbar">
-          <p class="panel-hint">Carregue fotos e copie o link para o campo Imagem do produto.</p>
+          <p class="panel-hint">Biblioteca de imagens (Cloudinary). Use nos campos de imagem ou copie o link.</p>
         </div>
         <label class="upload-zone" for="media-input">
           <span class="upload-zone__icon">↑</span>

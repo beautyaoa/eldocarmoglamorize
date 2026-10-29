@@ -10,7 +10,7 @@
 </head>
 <body>
   <!-- ========== ANNOUNCEMENT BAR ========== -->
-  <a class="announce-bar" href="https://youtu.be/6vzUPh26JZA?si=xl3FzxXKTsRD6NoC" target="_blank" rel="noopener">
+  <a class="announce-bar" data-cms="announce" href="https://youtu.be/6vzUPh26JZA?si=xl3FzxXKTsRD6NoC" target="_blank" rel="noopener">
     Já disponível — música <strong>Tá Queimar</strong> 🔥🔥🔥 · Ouvir no YouTube
   </a>
 
@@ -161,9 +161,9 @@
       <div class="hero__overlay"></div>
     </div>
     <div class="hero__content container">
-      <p class="hero__eyebrow">Beleza &amp; Estética · Luanda</p>
-      <h1 class="hero__title">Elegância<br>que se sente</h1>
-      <p class="hero__subtitle">Tratamentos premium pensados para realçar a sua beleza natural.</p>
+      <p class="hero__eyebrow" data-cms="heroEyebrow">Beleza &amp; Estética · Luanda</p>
+      <h1 class="hero__title" data-cms="heroTitle">Elegância<br>que se sente</h1>
+      <p class="hero__subtitle" data-cms="heroSubtitle">Tratamentos premium pensados para realçar a sua beleza natural.</p>
       <div class="hero__ctas">
         <a href="#agendar" class="btn btn--primary">Agendar sessão</a>
         <a href="#servicos" class="btn btn--ghost btn--on-dark">Ver serviços</a>
@@ -175,98 +175,16 @@
   <section class="section" id="servicos">
     <div class="container">
       <header class="section__header">
-        <p class="section__eyebrow">O que fazemos</p>
-        <h2 class="section__title">Serviços</h2>
+        <p class="section__eyebrow" data-cms="servicesEyebrow">O que fazemos</p>
+        <h2 class="section__title" data-cms="servicesTitle">Serviços</h2>
         <div class="section__line"></div>
       </header>
 
-      <div class="services-grid">
-        <article class="service-card" data-service="Manicure">
-          <div class="service-card__image">
-            <img src="assets/images/service-manicure.webp" alt="Manicure" loading="lazy">
-          </div>
-          <div class="service-card__overlay">
-            <h3 class="service-card__title">Manicure</h3>
-            <p class="service-card__desc">Cuidado completo das unhas das mãos com acabamento impecável.</p>
-            <p class="service-card__price">Consultar preço</p>
-            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
-          </div>
-        </article>
-
-        <article class="service-card" data-service="Pedicure">
-          <div class="service-card__image">
-            <img src="assets/images/service-pedicure.webp" alt="Pedicure" loading="lazy">
-          </div>
-          <div class="service-card__overlay">
-            <h3 class="service-card__title">Pedicure</h3>
-            <p class="service-card__desc">Tratamento relaxante e detalhado para os pés.</p>
-            <p class="service-card__price">Consultar preço</p>
-            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
-          </div>
-        </article>
-
-        <article class="service-card" data-service="Unhas de Gel / Acrílico">
-          <div class="service-card__image">
-            <img src="assets/images/service-gel.webp" alt="Unhas de Gel / Acrílico" loading="lazy">
-          </div>
-          <div class="service-card__overlay">
-            <h3 class="service-card__title">Unhas de Gel / Acrílico</h3>
-            <p class="service-card__desc">Alongamentos e designs personalizados com materiais premium.</p>
-            <p class="service-card__price">Consultar preço</p>
-            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
-          </div>
-        </article>
-
-        <article class="service-card" data-service="Design de Sobrancelhas">
-          <div class="service-card__image">
-            <img src="assets/images/service-sobrancelhas.webp" alt="Design de Sobrancelhas" loading="lazy">
-          </div>
-          <div class="service-card__overlay">
-            <h3 class="service-card__title">Design de Sobrancelhas</h3>
-            <p class="service-card__desc">Modelação e realce natural do olhar.</p>
-            <p class="service-card__price">Consultar preço</p>
-            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
-          </div>
-        </article>
-
-        <article class="service-card" data-service="Tratamentos Faciais">
-          <div class="service-card__image">
-            <img src="assets/images/service-facial.webp" alt="Tratamentos Faciais" loading="lazy">
-          </div>
-          <div class="service-card__overlay">
-            <h3 class="service-card__title">Tratamentos Faciais</h3>
-            <p class="service-card__desc">Limpeza e cuidados para uma pele radiante.</p>
-            <p class="service-card__price">Consultar preço</p>
-            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
-          </div>
-        </article>
-
-        <article class="service-card" data-service="Maquilhagem">
-          <div class="service-card__image">
-            <img src="assets/images/service-maquilhagem.webp" alt="Maquilhagem" loading="lazy">
-          </div>
-          <div class="service-card__overlay">
-            <h3 class="service-card__title">Maquilhagem</h3>
-            <p class="service-card__desc">Para ocasiões especiais ou o dia a dia com elegância.</p>
-            <p class="service-card__price">Consultar preço</p>
-            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
-          </div>
-        </article>
-
-        <article class="service-card" data-service="Lavagem + Tranças">
-          <div class="service-card__image">
-            <img src="assets/images/service-trancas.webp" alt="Lavagem + Tranças" loading="lazy">
-          </div>
-          <div class="service-card__overlay">
-            <h3 class="service-card__title">Lavagem + Tranças</h3>
-            <p class="service-card__desc">Lavagem com massagem e tranças profissionais — para princesas de todas as idades.</p>
-            <p class="service-card__price">9.600 Kz</p>
-            <a href="#agendar" class="btn btn--service agendar-btn">Agendar</a>
-          </div>
-        </article>
+      <div class="services-grid" id="services-grid">
+        <!-- Cards from catalog via main.js -->
       </div>
 
-      <p class="section__note">* Preços indicativos. Contacte-nos para confirmação e outros serviços.</p>
+      <p class="section__note" data-cms="servicesNote">* Preços indicativos. Contacte-nos para confirmação e outros serviços.</p>
     </div>
   </section>
 
@@ -274,8 +192,8 @@
   <section class="section section--experience" id="experiencia">
     <div class="container">
       <header class="section__header">
-        <p class="section__eyebrow">Por dentro</p>
-        <h2 class="section__title">A Experiência Glamorize</h2>
+        <p class="section__eyebrow" data-cms="experienceEyebrow">Por dentro</p>
+        <h2 class="section__title" data-cms="experienceTitle">A Experiência Glamorize</h2>
         <div class="section__line"></div>
       </header>
     </div>
@@ -369,8 +287,8 @@
   <section class="section section--alt" id="galeria">
     <div class="container">
       <header class="section__header">
-        <p class="section__eyebrow">Trabalhos</p>
-        <h2 class="section__title">Galeria</h2>
+        <p class="section__eyebrow" data-cms="galleryEyebrow">Trabalhos</p>
+        <h2 class="section__title" data-cms="galleryTitle">Galeria</h2>
         <div class="section__line"></div>
       </header>
 

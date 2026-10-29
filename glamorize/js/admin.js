@@ -15,7 +15,9 @@
     dashboard: 'Painel',
     orders: 'Encomendas',
     bookings: 'Agendamentos',
-    products: 'Produtos',
+    products: 'Serviços',
+    content: 'Conteúdo',
+    gallery: 'Galeria',
     zones: 'Zonas',
     images: 'Imagens'
   };
@@ -150,7 +152,10 @@
       ...base,
       ...remote,
       products: Array.isArray(remote.products) ? remote.products : base.products,
+      services: Array.isArray(remote.services) ? remote.services : base.services,
+      gallery: Array.isArray(remote.gallery) ? remote.gallery : base.gallery,
       zones: Array.isArray(remote.zones) ? remote.zones : base.zones,
+      site: { ...(base.site || {}), ...(remote.site || {}) },
       texts: { ...base.texts, ...(remote.texts || {}) },
       images: { ...base.images, ...(remote.images || {}) }
     };
@@ -736,12 +741,18 @@
         <div class="product-card__editor">
           <label>Nome <input type="text" data-field="name" value="${escapeAttr(p.name)}"></label>
           <label>Preço (Kz) <input type="number" data-field="price" value="${p.price}" min="0" step="50"></label>
+          <label>Preço no site (texto) <input type="text" data-field="priceLabel" value="${escapeAttr(p.priceLabel || '')}" placeholder="Consultar preço / 9.600 Kz"></label>
           <label>Descrição <textarea data-field="description" rows="2">${escapeHtml(
             p.description || ''
           )}</textarea></label>
-          <label>Imagem (URL ou caminho) <input type="text" data-field="image" value="${escapeAttr(
+          <label>Imagem (URL) <input type="text" data-field="image" value="${escapeAttr(
             p.image || ''
           )}"></label>
+          <div class="image-field">
+            <button type="button" class="tool-btn" data-action="upload-image">Carregar imagem</button>
+            <input type="file" class="product-file" accept="image/*" hidden>
+          </div>
+          ${p.image ? `<img class="preview-img" src="${escapeAttr(p.image)}" alt="">` : ''}
           <div class="product-card__editor-actions">
             <button type="button" class="btn-done" data-action="done">Concluído</button>
           </div>
@@ -799,8 +810,30 @@
             }
           } else if (action === 'duplicate') {
             duplicateProduct(id);
+          } else if (action === 'upload-image') {
+            const fileInput = card.querySelector('.product-file');
+            fileInput?.click();
           }
         });
+      });
+
+      const productFile = card.querySelector('.product-file');
+      productFile?.addEventListener('change', async () => {
+        const file = productFile.files?.[0];
+        if (!file) return;
+        const idx = findProductIndex(id);
+        if (idx < 0) return;
+        try {
+          setStatus('A enviar imagem…');
+          const data = await uploadMedia(file);
+          catalog.products[idx].image = data.secure_url;
+          mediaLibrary.unshift({ url: data.secure_url });
+          setStatus('Imagem actualizada — Guardar / Publicar');
+          renderProductsEditor();
+        } catch (err) {
+          setStatus('Erro no envio: ' + err.message);
+        }
+        productFile.value = '';
       });
 
       // Field changes while editing
@@ -989,6 +1022,206 @@
     updateDashboard();
   }
 
+  /* ——— Site content editor ——— */
+  function ensureSite() {
+    if (!catalog.site) catalog.site = structuredClone(DEFAULTS.site || {});
+  }
+
+  const CONTENT_FIELDS = [
+    { group: 'Anúncio', fields: [
+      { key: 'announceText', label: 'Texto do anúncio' },
+      { key: 'announceHref', label: 'Link do anúncio' }
+    ]},
+    { group: 'Hero', fields: [
+      { key: 'heroEyebrow', label: 'Linha superior' },
+      { key: 'heroTitle', label: 'Título (use \\n para quebra de linha)', multiline: true },
+      { key: 'heroSubtitle', label: 'Subtítulo', multiline: true },
+      { key: 'heroImage', label: 'Imagem de fundo', image: true }
+    ]},
+    { group: 'Manifesto', fields: [
+      { key: 'manifestoQuote', label: 'Citação', multiline: true },
+      { key: 'manifestoAttr', label: 'Atribuição' }
+    ]},
+    { group: 'Secções', fields: [
+      { key: 'servicesEyebrow', label: 'Serviços — eyebrow' },
+      { key: 'servicesTitle', label: 'Serviços — título' },
+      { key: 'servicesNote', label: 'Serviços — nota' },
+      { key: 'experienceEyebrow', label: 'Experiência — eyebrow' },
+      { key: 'experienceTitle', label: 'Experiência — título' },
+      { key: 'galleryEyebrow', label: 'Galeria — eyebrow' },
+      { key: 'galleryTitle', label: 'Galeria — título' },
+      { key: 'bookingEyebrow', label: 'Agendar — eyebrow' },
+      { key: 'bookingTitle', label: 'Agendar — título' },
+      { key: 'minibarEyebrow', label: 'Mini-Bar — eyebrow' },
+      { key: 'minibarTitle', label: 'Mini-Bar — título' },
+      { key: 'minibarIntro', label: 'Mini-Bar — intro' },
+      { key: 'minibarCardImage', label: 'Mini-Bar — imagem do cartão', image: true }
+    ]},
+    { group: 'Confiança', fields: [
+      { key: 'trust1Value', label: 'Item 1 — valor' },
+      { key: 'trust1Label', label: 'Item 1 — etiqueta' },
+      { key: 'trust2Value', label: 'Item 2 — valor' },
+      { key: 'trust2Label', label: 'Item 2 — etiqueta' },
+      { key: 'trust3Value', label: 'Item 3 — valor' },
+      { key: 'trust3Label', label: 'Item 3 — etiqueta' },
+      { key: 'trust4Value', label: 'Item 4 — valor' },
+      { key: 'trust4Label', label: 'Item 4 — etiqueta' },
+      { key: 'trust4Href', label: 'Item 4 — link' }
+    ]},
+    { group: 'Rodapé & contacto', fields: [
+      { key: 'footerPhone', label: 'Telefone' },
+      { key: 'footerAddress', label: 'Morada' },
+      { key: 'footerHours', label: 'Horário' },
+      { key: 'footerCopy', label: 'Copyright' },
+      { key: 'instagram', label: 'Instagram URL' },
+      { key: 'facebook', label: 'Facebook URL' },
+      { key: 'whatsapp', label: 'WhatsApp (código país + número)' },
+      { key: 'logo', label: 'Logo', image: true }
+    ]}
+  ];
+
+  function renderContentEditor() {
+    ensureSite();
+    const el = document.getElementById('content-editor');
+    if (!el) return;
+    el.innerHTML = CONTENT_FIELDS.map((group) => `
+      <div class="content-group">
+        <h3 class="content-group__title">${group.group}</h3>
+        ${group.fields
+          .map((f) => {
+            const val = catalog.site[f.key] ?? '';
+            if (f.image) {
+              return `<div class="content-field content-field--image">
+                <label>${f.label}
+                  <input type="text" data-ckey="${f.key}" value="${escapeAttr(String(val))}">
+                </label>
+                <button type="button" class="tool-btn upload-content-img" data-ckey="${f.key}">Carregar</button>
+                <input type="file" class="content-file" data-ckey="${f.key}" accept="image/*" hidden>
+                ${val ? `<img class="preview-img" src="${escapeAttr(String(val))}" alt="">` : ''}
+              </div>`;
+            }
+            if (f.multiline) {
+              return `<label class="content-field">${f.label}
+                <textarea data-ckey="${f.key}" rows="2">${escapeHtml(String(val))}</textarea>
+              </label>`;
+            }
+            return `<label class="content-field">${f.label}
+              <input type="text" data-ckey="${f.key}" value="${escapeAttr(String(val))}">
+            </label>`;
+          })
+          .join('')}
+      </div>`).join('');
+
+    el.querySelectorAll('[data-ckey]').forEach((input) => {
+      if (input.type === 'file') return;
+      input.addEventListener('change', () => {
+        catalog.site[input.dataset.ckey] = input.value;
+      });
+    });
+    el.querySelectorAll('.upload-content-img').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        el.querySelector(`.content-file[data-ckey="${btn.dataset.ckey}"]`)?.click();
+      });
+    });
+    el.querySelectorAll('.content-file').forEach((fileInput) => {
+      fileInput.addEventListener('change', async () => {
+        const file = fileInput.files?.[0];
+        if (!file) return;
+        const key = fileInput.dataset.ckey;
+        try {
+          setStatus('A enviar imagem…');
+          const data = await uploadMedia(file);
+          catalog.site[key] = data.secure_url;
+          mediaLibrary.unshift({ url: data.secure_url });
+          setStatus('Imagem actualizada — Guardar / Publicar');
+          renderContentEditor();
+        } catch (e) {
+          setStatus('Erro no envio: ' + e.message);
+        }
+        fileInput.value = '';
+      });
+    });
+  }
+
+  /* ——— Gallery editor ——— */
+  function ensureGallery() {
+    if (!Array.isArray(catalog.gallery)) catalog.gallery = structuredClone(DEFAULTS.gallery || []);
+  }
+
+  function renderGalleryEditor() {
+    ensureGallery();
+    const el = document.getElementById('gallery-editor');
+    if (!el) return;
+    el.innerHTML = (catalog.gallery || [])
+      .map(
+        (g, idx) => `
+      <div class="gallery-edit-card" data-gid="${g.id}">
+        <img src="${escapeAttr(g.image || '')}" alt="" onerror="this.style.opacity=0.2">
+        <label>Alt <input type="text" data-gfield="alt" value="${escapeAttr(g.alt || '')}"></label>
+        <label>URL <input type="text" data-gfield="image" value="${escapeAttr(g.image || '')}"></label>
+        <div class="gallery-edit-actions">
+          <button type="button" class="tool-btn upload-gallery-img">Carregar</button>
+          <input type="file" class="gallery-file" accept="image/*" hidden>
+          <button type="button" class="tool-btn tool-btn--danger remove-gallery">Remover</button>
+        </div>
+      </div>`
+      )
+      .join('');
+
+    el.querySelectorAll('.gallery-edit-card').forEach((card) => {
+      const id = card.dataset.gid;
+      const idx = catalog.gallery.findIndex((x) => x.id === id);
+      if (idx < 0) return;
+      card.querySelectorAll('[data-gfield]').forEach((input) => {
+        input.addEventListener('change', () => {
+          catalog.gallery[idx][input.dataset.gfield] = input.value;
+        });
+      });
+      const fileInput = card.querySelector('.gallery-file');
+      card.querySelector('.upload-gallery-img')?.addEventListener('click', () => fileInput?.click());
+      fileInput?.addEventListener('change', async () => {
+        const file = fileInput.files?.[0];
+        if (!file) return;
+        try {
+          setStatus('A enviar imagem…');
+          const data = await uploadMedia(file);
+          catalog.gallery[idx].image = data.secure_url;
+          mediaLibrary.unshift({ url: data.secure_url });
+          setStatus('Imagem actualizada — Guardar / Publicar');
+          renderGalleryEditor();
+        } catch (e) {
+          setStatus('Erro no envio: ' + e.message);
+        }
+        fileInput.value = '';
+      });
+      card.querySelector('.remove-gallery')?.addEventListener('click', () => {
+        catalog.gallery.splice(idx, 1);
+        renderGalleryEditor();
+      });
+    });
+  }
+
+  function addGalleryItem() {
+    ensureGallery();
+    catalog.gallery.push({
+      id: 'g_' + Date.now(),
+      image: '',
+      alt: ''
+    });
+    renderGalleryEditor();
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function escapeAttr(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
   /* ——— Images upload (unsigned; no vendor name in UI) ——— */
   async function uploadMedia(file) {
     const fd = new FormData();
@@ -1067,6 +1300,10 @@
     if (title) title.textContent = TITLES[tab] || tab;
     if (tab === 'orders' || tab === 'dashboard') loadOrders();
     if (tab === 'bookings' || tab === 'dashboard') loadBookings();
+    if (tab === 'content') renderContentEditor();
+    if (tab === 'gallery') renderGalleryEditor();
+    if (tab === 'products') renderProductsEditor();
+    if (tab === 'zones') renderZonesEditor();
     closeSidebar();
   }
 
@@ -1109,7 +1346,11 @@
 
     setupMedia();
     await loadLiveCatalog();
+    ensureSite();
+    ensureGallery();
     renderProductsEditor();
+    renderContentEditor();
+    renderGalleryEditor();
     renderZonesEditor();
     await loadOrders();
     await loadBookings();
@@ -1120,6 +1361,7 @@
     document.getElementById('btn-refresh-orders')?.addEventListener('click', loadOrders);
     document.getElementById('btn-refresh-bookings')?.addEventListener('click', loadBookings);
     document.getElementById('add-product-btn')?.addEventListener('click', addProduct);
+    document.getElementById('add-gallery-btn')?.addEventListener('click', addGalleryItem);
     document.getElementById('add-zone-btn')?.addEventListener('click', addZone);
 
     const productSearchInput = document.getElementById('product-search');
