@@ -36,13 +36,21 @@ Pure HTML / CSS / JS — ready for Cloudflare Pages.
 ```
 glamorize/
 ├── index.html
+├── admin.html
 ├── css/style.css
+├── css/admin.css
 ├── js/main.js
-├── assets/images/
-│   ├── eldocarmoglamorizelogo.webp
-│   ├── glamorize-model-1.webp
-│   ├── team.webp
-│   └── braids-1 … braids-6.webp
+├── js/admin.js
+├── js/products.js
+├── assets/
+│   ├── icons/
+│   ├── images/          # logo, services, gallery, lubango
+│   └── videos/          # hero-1.mp4, experience clips + posters
+├── worker/
+│   ├── src/index.js
+│   └── wrangler.toml
+├── ADMIN_GUIDE.md
+├── BLUEPRINT.md
 └── README.md
 ```
 
@@ -110,8 +118,8 @@ Same stack as Chocolate Scookiie / Barbershop Mini-Bar:
 **Deploy Worker**
 ```bash
 cd worker
-npx wrangler kv namespace create ORDERS
-# put id into wrangler.toml
+npx wrangler kv namespace create glamorize-orders   # dedicated — do not share with other sites
+# put the new id into wrangler.toml
 npx wrangler secret put ADMIN_PASSWORD
 npx wrangler secret put CLOUDINARY_CLOUD_NAME   # gyssk0cm
 npx wrangler secret put CLOUDINARY_API_KEY
