@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin · Eldo Carmo Glamorize</title>
+  <link rel="icon" href="assets/images/eldocarmoglamorizelogo.webp" type="image/webp">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- ========== LOGIN ========== -->
+  <div id="login-screen">
+    <form class="login-card" id="login-form" autocomplete="on">
+      <img src="assets/images/eldocarmoglamorizelogo.webp" alt="" class="login-logo" width="72" height="72">
+      <h1>Glamorize Admin</h1>
+      <p class="login-sub">Área reservada à equipa</p>
+
+      <label class="field-label">Password</label>
+      <div class="password-field">
+        <input type="password" name="password" id="login-password" required autocomplete="current-password" autofocus>
+        <button type="button" class="password-toggle" id="password-toggle" aria-label="Mostrar password" title="Mostrar / ocultar">
+          <svg class="icon-eye" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg class="icon-eye-off is-hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
+      </div>
+
+      <label class="remember-row">
+        <input type="checkbox" id="remember-me" name="remember">
+        <span>Manter sessão iniciada</span>
+      </label>
+
+      <button type="submit" class="btn-login">Entrar</button>
+      <p class="login-hint">Consulte o guia da equipa se precisar de ajuda.</p>
+    </form>
+  </div>
+
+  <!-- ========== APP ========== -->
+  <div id="admin-app" class="is-hidden">
+    <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <img src="assets/images/eldocarmoglamorizelogo.webp" alt="" width="36" height="36">
+        <div>
+          <strong>Glamorize</strong>
+          <span>Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar__nav">
+        <button type="button" data-tab="dashboard" class="nav-item is-active">
+          <span class="nav-icon">◈</span> Painel
+        </button>
+        <button type="button" data-tab="orders" class="nav-item">
+          <span class="nav-icon">☰</span> Encomendas
+          <span class="nav-badge" id="orders-badge" hidden>0</span>
+        </button>
+        <button type="button" data-tab="products" class="nav-item">
+          <span class="nav-icon">◇</span> Produtos
+        </button>
+        <button type="button" data-tab="zones" class="nav-item">
+          <span class="nav-icon">◎</span> Zonas
+        </button>
+        <button type="button" data-tab="images" class="nav-item">
+          <span class="nav-icon">▢</span> Imagens
+        </button>
+      </nav>
+
+      <div class="sidebar__footer">
+        <button type="button" id="btn-save-draft" class="side-btn">Guardar rascunho</button>
+        <button type="button" id="btn-publish" class="side-btn side-btn--primary">Publicar na loja</button>
+        <button type="button" id="btn-logout" class="side-btn side-btn--ghost">Sair</button>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="topbar">
+        <h1 class="topbar__title" id="page-title">Painel</h1>
+        <p class="topbar__status" id="admin-status"></p>
+      </header>
+
+      <!-- Dashboard -->
+      <section class="admin-panel is-active" data-panel="dashboard">
+        <div class="stat-grid" id="stat-grid">
+          <div class="stat-card">
+            <span class="stat-label">Encomendas pendentes</span>
+            <strong class="stat-value" id="stat-pending">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Total encomendas</span>
+            <strong class="stat-value" id="stat-total">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Produtos activos</span>
+            <strong class="stat-value" id="stat-products">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Zonas activas</span>
+            <strong class="stat-value" id="stat-zones">—</strong>
+          </div>
+        </div>
+        <div class="dash-card">
+          <h2>Últimas encomendas</h2>
+          <div id="dash-orders"></div>
+          <button type="button" class="link-btn" data-goto="orders">Ver todas →</button>
+        </div>
+        <div class="dash-card dash-card--hint" id="connection-hint"></div>
+      </section>
+
+      <!-- Orders -->
+      <section class="admin-panel" data-panel="orders">
+        <div class="panel-toolbar">
+          <div class="filter-row">
+            <button type="button" class="filter-chip is-active" data-filter="all">Todas</button>
+            <button type="button" class="filter-chip" data-filter="pending">Pendentes</button>
+            <button type="button" class="filter-chip" data-filter="confirmed">Confirmadas</button>
+            <button type="button" class="filter-chip" data-filter="delivered">Entregues</button>
+          </div>
+          <button type="button" id="btn-refresh-orders" class="tool-btn">Actualizar</button>
+        </div>
+        <div id="orders-list"></div>
+      </section>
+
+      <!-- Products -->
+      <section class="admin-panel" data-panel="products">
+        <div class="panel-toolbar panel-toolbar--products">
+          <div class="products-toolbar-left">
+            <input type="search" id="product-search" class="search-input" placeholder="Pesquisar produtos…" autocomplete="off">
+            <p class="panel-hint">Toque em <strong>Editar</strong> para alterar · arraste para reordenar · depois <strong>Guardar</strong> ou <strong>Publicar</strong>.</p>
+          </div>
+          <button type="button" id="add-product-btn" class="tool-btn tool-btn--primary">+ Produto</button>
+        </div>
+        <div id="products-editor"></div>
+      </section>
+
+      <!-- Zones -->
+      <section class="admin-panel" data-panel="zones">
+        <div class="panel-toolbar">
+          <p class="panel-hint">Taxas de entrega por zona de Luanda (Kz).</p>
+          <button type="button" id="add-zone-btn" class="tool-btn tool-btn--primary">+ Zona</button>
+        </div>
+        <div id="zones-editor"></div>
+      </section>
+
+      <!-- Images -->
+      <section class="admin-panel" data-panel="images">
+        <div class="panel-toolbar">
+          <p class="panel-hint">Carregue fotos e copie o link para o campo Imagem do produto.</p>
+        </div>
+        <label class="upload-zone" for="media-input">
+          <span class="upload-zone__icon">↑</span>
+          <span>Toque ou escolha ficheiros de imagem</span>
+          <input type="file" id="media-input" accept="image/*" multiple hidden>
+        </label>
+        <div id="media-list" class="media-grid"></div>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/products.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

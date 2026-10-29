@@ -86,3 +86,38 @@ Push this folder to its own GitHub repo → Cloudflare Pages
 - Added `autoplay`, `webkit-playsinline`, muted defaults + touch/click unlock in JS
 - Files: `index.html`, `js/main.js`, `assets/videos/hero-1.mp4`
 
+
+---
+
+## Admin panel (API blueprint)
+
+Same stack as Chocolate Scookiie / Barbershop Mini-Bar:
+
+| File | Role |
+|------|------|
+| `admin.html` | Login + Painel / Encomendas / Produtos / Zonas / Imagens |
+| `js/products.js` | Defaults + `GLAMORIZE_CONFIG` (public only) |
+| `js/admin.js` | Admin UI logic |
+| `css/admin.css` | Admin styles |
+| `worker/` | Publish catalog → Cloudinary · orders → KV |
+
+**Cloudinary**
+- Cloud: `gyssk0cm`
+- Unsigned preset: `glamorize_unsigned`
+- Folder / catalog: `glamorize` / `glamorize/catalog`
+- API key & secret: **only** via `wrangler secret put` (never in git)
+
+**Deploy Worker**
+```bash
+cd worker
+npx wrangler kv namespace create ORDERS
+# put id into wrangler.toml
+npx wrangler secret put ADMIN_PASSWORD
+npx wrangler secret put CLOUDINARY_CLOUD_NAME   # gyssk0cm
+npx wrangler secret put CLOUDINARY_API_KEY
+npx wrangler secret put CLOUDINARY_API_SECRET
+npx wrangler deploy
+```
+Then set `workerUrl` in `js/products.js` and open `/admin.html` → **Publicar na loja**.
+
+See `BLUEPRINT.md` and `ADMIN_GUIDE.md`.

@@ -1,0 +1,16 @@
+name = "eldocarmoglamorize-api"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+workers_dev = true
+preview_urls = true
+
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "637c82d5ba894c4bbc184a4a3aa5a798"
+preview_id = "6665a64b56904e8bb3ca902ee5bb747f"
+
+# Secrets (do NOT put values here — use CLI):
+#   npx wrangler secret put ADMIN_PASSWORD
+#   npx wrangler secret put CLOUDINARY_CLOUD_NAME
+#   npx wrangler secret put CLOUDINARY_API_KEY
+#   npx wrangler secret put CLOUDINARY_API_SECRET
